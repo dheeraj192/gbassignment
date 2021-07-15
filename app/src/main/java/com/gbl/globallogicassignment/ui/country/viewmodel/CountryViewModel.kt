@@ -1,5 +1,6 @@
 package com.gbl.globallogicassignment.ui.country.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +13,7 @@ class CountryViewModel(private val countryDataSource: CountryDataSource) : ViewM
 
     private val countryLiveData: MutableLiveData<Resource<List<Country>>> = MutableLiveData()
 
-    fun getCountryLiveData(): MutableLiveData<Resource<List<Country>>> {
+    fun getCountryLiveData(): LiveData<Resource<List<Country>>> {
         return countryLiveData
     }
 
@@ -25,7 +26,7 @@ class CountryViewModel(private val countryDataSource: CountryDataSource) : ViewM
                 val list = countryDataSource.fetchCountries()
                 countryLiveData.value = Resource.success(list)
             } catch (e: Exception) {
-                countryLiveData.value = Resource.error(null,"Error while fetching countries")
+                countryLiveData.value = Resource.error(null, e.localizedMessage)
             }
         }
     }
